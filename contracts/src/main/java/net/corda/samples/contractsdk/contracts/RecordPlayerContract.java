@@ -18,7 +18,7 @@ import static net.corda.core.contracts.ContractsDSL.requireThat;
 // ************
 public class RecordPlayerContract implements Contract {
     // This id must be used to identify our contract when building a transaction.
-    public static final String ID = "net.corda.samples.contractsdk.RecordPlayerContract";
+    public static final String ID = "net.corda.samples.contractsdk.contracts.RecordPlayerContract";
 
     @Override
     public void verify(@NotNull LedgerTransaction tx) throws IllegalArgumentException { }

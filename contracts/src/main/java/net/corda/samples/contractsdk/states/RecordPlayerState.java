@@ -1,5 +1,6 @@
 package net.corda.samples.contractsdk.states;
 
+import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.serialization.ConstructorForDeserialization;
 import net.corda.samples.contractsdk.contracts.RecordPlayerContract;
@@ -7,6 +8,7 @@ import net.corda.core.contracts.BelongsToContract;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 // * State *
 // *********
 @BelongsToContract(RecordPlayerContract.class)
-public class RecordPlayerState implements ContractState {
+public class RecordPlayerState implements ContractState, LinearState {
 
     // we'll assume some basic stats about this record player
     private Needle needle; // enum describing the needle type or damage
@@ -42,6 +44,9 @@ public class RecordPlayerState implements ContractState {
         if (magneticStrength < 0) {
             throw new IllegalArgumentException("Invalid magnetic strength.");
         }
+
+        this.manufacturer = manufacturer;
+        this.dealer = dealer;
 
         this.needle = needle;
         this.magneticStrength = magneticStrength;
@@ -129,7 +134,12 @@ public class RecordPlayerState implements ContractState {
     public RecordPlayerState updatePlayer(Party manufacturer, Party dealer, Needle needle, int magneticStrength, int coilTurns, int amplifierSNR, int songsPlayed, UniqueIdentifier uid) {
 
         // take our params and apply them to the state object
-        return new RecordPlayerState(manufacturer, dealer, needle, magneticStrength, coilTurns, songsPlayed, amplifierSNR, uid);
+        return new RecordPlayerState(manufacturer, dealer, needle, magneticStrength, coilTurns, amplifierSNR, songsPlayed, uid);
     }
 
+    @NotNull
+    @Override
+    public UniqueIdentifier getLinearId() {
+        return this.getUid();
+    }
 }

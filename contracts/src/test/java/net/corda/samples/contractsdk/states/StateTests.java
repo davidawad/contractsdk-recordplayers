@@ -74,10 +74,11 @@ public class StateTests {
         // change params
 
         // st.updatePlayer(st.getManufacturer(), st.getOwner(), st.getNeedle(), st.getMagneticStrength(), st.getCoilTurns(), st.getAmplifierSNR(), st.getSongsPlayed(), st.getUid());
-        st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid());
-        assertEquals(50, st.getMagneticStrength());
-        assertEquals(650, st.getCoilTurns());
-        assertEquals(8000, st.getAmplifierSNR());
+        // st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid());
+
+        assertEquals(50, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getMagneticStrength());
+        assertEquals(650, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getCoilTurns());
+        assertEquals(8000, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getAmplifierSNR());
 
     }
 
