@@ -21,7 +21,16 @@ public class RecordPlayerContract implements Contract {
     public static final String ID = "net.corda.samples.contractsdk.contracts.RecordPlayerContract";
 
     @Override
-    public void verify(@NotNull LedgerTransaction tx) throws IllegalArgumentException { }
+    public void verify(@NotNull LedgerTransaction tx) throws IllegalArgumentException {
+
+        final CommandWithParties<RecordPlayerContract.Commands> command = requireSingleCommand(tx.getCommands(), RecordPlayerContract.Commands.class);
+        if (command.getValue() instanceof RecordPlayerContract.Commands.Issue) {
+        } else {
+            // fail verification if we can't find the command
+            throw new IllegalArgumentException("Command not found!");
+        }
+
+    }
 
     // Used to indicate the transaction's intent.
     public interface Commands extends CommandData {
