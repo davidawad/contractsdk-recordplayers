@@ -7,13 +7,11 @@ import net.corda.core.identity.CordaX500Name;
 import net.corda.core.identity.Party;
 import net.corda.testing.core.TestIdentity;
 import net.corda.testing.node.MockServices;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StateTests {
@@ -24,7 +22,8 @@ public class StateTests {
     private final Party bob = new TestIdentity(new CordaX500Name("Bob's Hustle Records", "", "GB")).getParty();
 
     @Before
-    public void setup() { }
+    public void setup() {
+    }
 
     @After
     public void tearDown() {
@@ -72,16 +71,11 @@ public class StateTests {
         assertEquals(10000, st.getAmplifierSNR());
 
         // change params
-
-        // st.updatePlayer(st.getManufacturer(), st.getOwner(), st.getNeedle(), st.getMagneticStrength(), st.getCoilTurns(), st.getAmplifierSNR(), st.getSongsPlayed(), st.getUid());
-        // st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid());
-
-        assertEquals(50, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getMagneticStrength());
-        assertEquals(650, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getCoilTurns());
-        assertEquals(8000, st.updatePlayer(st.getManufacturer(), st.getDealer(), st.getNeedle(), 50, 650, 8000, st.getSongsPlayed(), st.getUid()).getAmplifierSNR());
+        assertEquals(50, st.update(st.getNeedle(), 50, 650, 8000, st.getSongsPlayed()).getMagneticStrength());
+        assertEquals(650, st.update(st.getNeedle(), 50, 650, 8000, st.getSongsPlayed()).getCoilTurns());
+        assertEquals(8000, st.update(st.getNeedle(), 50, 650, 8000, st.getSongsPlayed()).getAmplifierSNR());
 
     }
-
 
 
 }

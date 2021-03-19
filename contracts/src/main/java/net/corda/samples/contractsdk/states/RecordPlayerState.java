@@ -1,5 +1,6 @@
 package net.corda.samples.contractsdk.states;
 
+import com.r3.corda.lib.contracts.contractsdk.verifiers.StateWithRoles;
 import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.serialization.ConstructorForDeserialization;
@@ -18,7 +19,7 @@ import java.util.List;
 // * State *
 // *********
 @BelongsToContract(RecordPlayerContract.class)
-public class RecordPlayerState implements ContractState, LinearState {
+public class RecordPlayerState implements ContractState, LinearState, StateWithRoles {
 
     // we'll assume some basic stats about this record player
     private Needle needle; // enum describing the needle type or damage
@@ -130,9 +131,7 @@ public class RecordPlayerState implements ContractState, LinearState {
     }
 
 
-    // TODO method for updating the record player to specifications
-    public RecordPlayerState updatePlayer(Party manufacturer, Party dealer, Needle needle, int magneticStrength, int coilTurns, int amplifierSNR, int songsPlayed, UniqueIdentifier uid) {
-
+    public RecordPlayerState update(Needle needle, int magneticStrength, int coilTurns, int amplifierSNR, int songsPlayed) {
         // take our params and apply them to the state object
         return new RecordPlayerState(manufacturer, dealer, needle, magneticStrength, coilTurns, amplifierSNR, songsPlayed, uid);
     }
@@ -141,5 +140,28 @@ public class RecordPlayerState implements ContractState, LinearState {
     @Override
     public UniqueIdentifier getLinearId() {
         return this.getUid();
+    }
+
+    @NotNull
+    @Override
+    public Party getParty(@NotNull String role) {
+        Party ret;
+
+        role = role.toLowerCase();
+
+        switch(role) {
+            case "manufacturer" :
+                ret = getManufacturer();
+                break;
+
+            case "dealer" :
+                ret = getDealer();
+                break; // optional
+
+            default :
+                ret =  getManufacturer();
+                break;
+        }
+        return ret;
     }
 }
